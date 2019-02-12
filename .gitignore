@@ -1,0 +1,9 @@
+__pycache__
+
+libs/libsignal_protocol_cffi/*.c
+libs/libsignal_protocol_cffi/*.so
+libs/libsignal_protocol_cffi/*.o
+
+env
+
+.vscode
