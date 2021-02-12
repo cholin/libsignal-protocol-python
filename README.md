@@ -41,7 +41,7 @@ Example
 
 Alice and Bob example code
 
-```
+```python
 # create identity for bob (with keys)
 bob = SignalProtocol(b'bob')
 bob_signed_pre_pub_key = bob.generate_signed_pre_key()
