@@ -1,4 +1,4 @@
-from .signal_protocol_cffi import ffi, lib
+from signal_protocol_cffi import ffi, lib
 from functools import partial
 from abc import ABC, abstractmethod
 
