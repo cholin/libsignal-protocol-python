@@ -6,8 +6,10 @@ addons:
       - cmake
       - valgrind
 install:
+  - cmake --version
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON -Bbuild libs/libsignal-protocol-c
   - make -C build
+  - ls build/
   - pip install -r requirements.txt
   - python src/cffi/build.py
 script:
