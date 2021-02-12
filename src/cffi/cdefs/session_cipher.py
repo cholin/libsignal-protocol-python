@@ -139,7 +139,5 @@ int session_cipher_get_remote_registration_id(session_cipher *cipher, uint32_t *
  */
 int session_cipher_get_session_version(session_cipher *cipher, uint32_t *version);
 
-session_builder* session_cipher_get_builder(session_cipher *cipher);
-
 void session_cipher_free(session_cipher *cipher);
     """)
