@@ -1,0 +1,12 @@
+language: python
+addons:
+  apt:
+    packages:
+    - cmake
+install:
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON libs/libsignal-protocol-c -Bbuild
+  - make -C build
+  - pip install -r requirements.txt
+  - python src/cffi/build.py
+script:
+  - pytest -s

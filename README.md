@@ -21,11 +21,8 @@ Get Started
 
 ### Build libsignal-protocol-c as library
 ```
-> cd libs/libsignal-protocol-c
-> mkdir build && make
-> cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON ..
-> make
-> cd ../..
+> cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON libs/libsignal-protocol-c -Bbuild
+> make -C build
 ```
 
 ### Create environment and install dependencies
@@ -33,6 +30,11 @@ Get Started
 > python -m venv env
 > . env/bin/activate
 > pip install -r requirements.txt
+```
+
+### Build CFFI
+```
+> python src/cffi/build.py
 ```
 
 Example

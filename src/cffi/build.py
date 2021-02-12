@@ -11,9 +11,9 @@ ffi.set_source(
 #include "session_cipher.h"
 #include "protocol.h"
     """,
-    include_dirs=['../../libs/libsignal-protocol-c/src/'],
+    include_dirs=['libs/libsignal-protocol-c/src/'],
     libraries=['signal-protocol-c'],
-    library_dirs=['../../libs/libsignal-protocol-c/build/src/']
+    library_dirs=['build/']
 )
 
 if __name__ == "__main__":
