@@ -11,22 +11,29 @@ using the *C Foreign Function Interface for Python* package.
 Get Started
 -----------
 
+### Get Source
 ```
 > git clone git@github.com:cholin/libsignal-protocol-python.git
 > git submodule update --init --recursive
+```
 
-# Build libsignal-protocol-c as library
+### Build libsignal-protocol-c as library
+```
 > cd libs/libsignal-protocol-c
 > mkdir build && make
 > cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON ..
 > make
 > cd ../..
+```
 
-# create environment and install dependencies
+### Create environment and install dependencies
+```
 > python -m venv env
 > . env/bin/activate
 > pip install -r requirements.txt
+```
 
-# Start tests
+### Start tests
+```
 pytest -s
 ```
