@@ -6,9 +6,9 @@ addons:
     packages:
       - cmake
 install:
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON libs/libsignal-protocol-c -Bbuild
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON -Bbuild libs/libsignal-protocol-c
   - make -C build
   - pip install -r requirements.txt
   - python src/cffi/build.py
 script:
-  - pytest -s
+  - PYTHONMALLOC=malloc valgrind --show-leak-kinds=definite --log-file=/tmp/valgrind-output python -m pytest -s -vv --valgrind --valgrind-log=/tmp/valgrind-output
