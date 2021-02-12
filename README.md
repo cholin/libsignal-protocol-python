@@ -1,15 +1,14 @@
 signal-protocol-python
 ======================
 
-DISCLAMER: Incomplete and untrusthworthy python bindings for
-libsignal-protocol-c. These bindings were used for academic research purposes
-and should not be used in real world cryptographic applications.
-
-For a more mature alternative you may want to consider
-https://github.com/tgalal/python-axolotl.
-
 Python 3 bindings for *libsignal-protocol-c*. The actual c code is integrated
 using the *C Foreign Function Interface for Python* package.
+
+DISCLAMER: Incomplete and untrusthworthy python bindings for
+libsignal-protocol-c. These bindings were used for academic research purposes
+and should not be used in real world cryptographic applications. For a more
+mature alternative you may want to consider https://github.com/tgalal/python-axolotl.
+
 
 Get Started
 -----------
@@ -39,7 +38,7 @@ Get Started
 Example
 -------
 
-Alice and Bob example code
+Alice and Bob example code (see *tests/test_protocol.py*)
 
 ```python
 # create identity for bob (with keys)
