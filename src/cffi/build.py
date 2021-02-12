@@ -13,7 +13,7 @@ ffi.set_source(
     """,
     include_dirs=['libs/libsignal-protocol-c/src/'],
     libraries=['signal-protocol-c'],
-    library_dirs=['build/']
+    library_dirs=['build/src']
 )
 
 if __name__ == "__main__":
