@@ -1,8 +1,10 @@
 language: python
 addons:
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
     packages:
-    - cmake
+      - cmake
 install:
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON libs/libsignal-protocol-c -Bbuild
   - make -C build
