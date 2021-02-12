@@ -1,4 +1,8 @@
 from cdefs import ffi
+from pathlib import Path
+
+source_path = Path(__file__).resolve()
+source_dir = source_path.parent / '..' / '..'
 
 ffi.set_source(
     "signal_protocol_cffi",
@@ -11,9 +15,9 @@ ffi.set_source(
 #include "session_cipher.h"
 #include "protocol.h"
     """,
-    include_dirs=['libs/libsignal-protocol-c/src/'],
+    include_dirs=[str(source_dir / 'libs' / 'libsignal-protocol-c' / 'src')],
     libraries=['signal-protocol-c'],
-    library_dirs=['build/src']
+    library_dirs=[str(source_dir / 'build' / 'src')]
 )
 
 if __name__ == "__main__":

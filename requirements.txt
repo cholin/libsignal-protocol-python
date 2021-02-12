@@ -1,3 +1,4 @@
 pycryptodome
 cffi
 pytest-valgrind
+./src/cffi

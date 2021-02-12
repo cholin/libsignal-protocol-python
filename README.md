@@ -25,16 +25,13 @@ Get Started
 > make -C build
 ```
 
+Note: Needs cmake >= 3.13 (for B-Flag support, otherwise create by yourself and call cmake from within build directory)
+
 ### Create environment and install dependencies
 ```
 > python -m venv env
 > . env/bin/activate
 > pip install -r requirements.txt
-```
-
-### Build CFFI
-```
-> python src/cffi/build.py
 ```
 
 Example
