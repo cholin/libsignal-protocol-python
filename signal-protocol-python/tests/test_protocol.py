@@ -16,7 +16,7 @@ def test_protocol():
 
     # alice -> bob
     #   retrieve public key of Bob
-    alice_session_bob = alice.session(Address.create(b'bob', 1))
+    alice_session_bob = alice.session(b'bob', 1)
     if not alice_session_bob.initialized:
         bob_pub_keys = (bob.registration_id,
                         bob.identity.public_key, bob_signed_pre_pub_key,
@@ -32,12 +32,12 @@ def test_protocol():
 
     # transmit serialized over wire
 
-    plaintext = bob.session(Address.create(b'alice', 1)).decrypt(*serialized)
+    plaintext = bob.session(b'alice', 1).decrypt(*serialized)
     assert plaintext.bin() == msg
     print(plaintext.bin(), msg)
 
     # bob -> alice
-    bob_session_alice = bob.session(Address.create(b'alice', 1))
+    bob_session_alice = bob.session(b'alice', 1)
     ciphertext = bob_session_alice.encrypt(msg)
 
     assert ciphertext.type == lib.CIPHERTEXT_SIGNAL_TYPE
@@ -46,6 +46,6 @@ def test_protocol():
 
     # transmit serialized over wire
 
-    plaintext = alice.session(Address.create(b'bob', 1)).decrypt(*serialized)
+    plaintext = alice.session(b'bob', 1).decrypt(*serialized)
     assert plaintext.bin() == msg
     print(plaintext.bin(), msg)

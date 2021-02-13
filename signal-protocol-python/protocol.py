@@ -38,17 +38,6 @@ class SignalProtocol:
             lib.signal_protocol_pre_key_store_key(self.store.value, pre_key.ptr)
             yield pre_key.public_key
     
-    def session(self, recipient):
-        return Session(self.ctx, self.store, recipient)
-
-
-    # def is_trusted_identity(address, identity_public_key):
-    #     lib.signal_protocol_identity_is_trusted_identity(self.store.value,
-    #         address.value, identity_public_key.ptr)
-    
-
-
-# int signal_protocol_pre_key_load_key(signal_protocol_store_context *context, session_pre_key **pre_key, uint32_t pre_key_id);
-# int signal_protocol_pre_key_store_key(signal_protocol_store_context *context, session_pre_key *pre_key);
-# int signal_protocol_pre_key_contains_key(signal_protocol_store_context *context, uint32_t pre_key_id);
-# int signal_protocol_pre_key_remove_key(signal_protocol_store_context *context, uint32_t pre_key_id);
+    def session(self, recipient, device_id):
+        address = Address.create(recipient, device_id)
+        return Session(self.ctx, self.store, address)

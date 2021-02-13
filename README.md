@@ -52,7 +52,7 @@ bob_pre_pub_keys = list(bob.generate_pre_keys())
 alice = SignalProtocol(b'alice')
 
 # alice -> bob (Alice needs Bob's public key parts)
-alice_session_bob = alice.session(Address.create(b'bob', 1))
+alice_session_bob = alice.session(b'bob', 1)
 if not alice_session_bob.initialized:
     bob_pub_keys = (bob.registration_id,
                     bob.identity.public_key, bob_signed_pre_pub_key,
@@ -68,7 +68,7 @@ serialized = (lib.CIPHERTEXT_PREKEY_TYPE, ciphertext.serialize())
 
 # transmit serialized over wire
 
-plaintext = bob.session(Address.create(b'alice', 1)).decrypt(*serialized)
+plaintext = bob.session(b'alice', 1).decrypt(*serialized)
 assert plaintext.bin() == msg
 print(plaintext.bin(), msg)
 ```
