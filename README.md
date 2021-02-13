@@ -1,6 +1,8 @@
 signal-protocol-python
 ======================
 
+[![Build Status](https://travis-ci.com/cholin/libsignal-protocol-python.svg?branch=main)](https://travis-ci.com/cholin/libsignal-protocol-python)
+
 Python 3 bindings for *libsignal-protocol-c*. The actual c code is integrated
 using the *C Foreign Function Interface for Python* package.
 
