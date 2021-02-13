@@ -29,6 +29,9 @@ Get Started
 ### Run tests
 ```
 > python -m pytest
+
+# or to check for memory leaks through valgrind
+> PYTHONMALLOC=malloc valgrind --show-leak-kinds=definite --log-file=/tmp/valgrind-output python -m pytest -s -vv --valgrind --valgrind-log=/tmp/valgrind-output
 ```
 
 Example
