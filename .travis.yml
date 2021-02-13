@@ -10,4 +10,4 @@ before_install:
 install:
   - xargs -L 1 pip install -vv < requirements.txt
 script:
-  - PYTHONMALLOC=malloc valgrind --show-leak-kinds=definite --log-file=/tmp/valgrind-output python -m pytest -s -vv --valgrind --valgrind-log=/tmp/valgrind-output
+  - PYTHONMALLOC=malloc valgrind --show-leak-kinds=definite --log-file=/tmp/valgrind-output python -m pytest -rxXs -vv --valgrind --valgrind-log=/tmp/valgrind-output
