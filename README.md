@@ -4,7 +4,11 @@ signal-protocol-python
 [![Build Status](https://travis-ci.com/cholin/libsignal-protocol-python.svg?branch=main)](https://travis-ci.com/cholin/libsignal-protocol-python)
 
 Python 3 bindings for *libsignal-protocol-c*. The actual c code is integrated
-using the *C Foreign Function Interface for Python* package.
+using the *C Foreign Function Interface for Python* package. Similiar as
+*libsignal-protocol-c* this library only contains functionality for the
+cryptographic primitives. In other words local persistency, transport
+(public storage of public keys, transmission or receipt of messages) and inner
+message encoding is not part of this library.
 
 DISCLAMER: Incomplete and untrusthworthy. These bindings were used for academic research purposes and should not be used in real world cryptographic
 applications. For a more mature alternative you may want to consider
