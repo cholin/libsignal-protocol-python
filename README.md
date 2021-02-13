@@ -25,7 +25,7 @@ Get Started
 ```
 > python -m venv env
 > . env/bin/activate
-> pip install -r requirements.txt
+> xargs -L 1 pip install -vv < requirements.txt   # enforced order
 ```
 
 ### Run tests

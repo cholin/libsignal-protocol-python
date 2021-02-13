@@ -8,6 +8,6 @@ addons:
 before_install:
   - python -m pip install --upgrade pip
 install:
-  - pip install -r requirements.txt -vv
+  - xargs -L 1 pip install -vv < requirements.txt
 script:
   - PYTHONMALLOC=malloc valgrind --show-leak-kinds=definite --log-file=/tmp/valgrind-output python -m pytest -s -vv --valgrind --valgrind-log=/tmp/valgrind-output
