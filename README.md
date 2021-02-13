@@ -6,10 +6,9 @@ signal-protocol-python
 Python 3 bindings for *libsignal-protocol-c*. The actual c code is integrated
 using the *C Foreign Function Interface for Python* package.
 
-DISCLAMER: Incomplete and untrusthworthy python bindings for
-libsignal-protocol-c. These bindings were used for academic research purposes
-and should not be used in real world cryptographic applications. For a more
-mature alternative you may want to consider https://github.com/tgalal/python-axolotl.
+DISCLAMER: Incomplete and untrusthworthy. These bindings were used for academic research purposes and should not be used in real world cryptographic
+applications. For a more mature alternative you may want to consider
+https://github.com/tgalal/python-axolotl.
 
 
 Get Started
