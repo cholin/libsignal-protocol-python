@@ -1,13 +1,10 @@
 from cdefs import ffi
 from pathlib import Path
-
-source_path = Path(__file__).resolve()
-source_dir = source_path.parent / '..' / '..'
-
+import sys
+path_dirs = [Path(p) for p in sys.path]
 ffi.set_source(
     "signal_protocol_cffi",
     """
-
 #include <stdlib.h>
 #include "signal_protocol.h"
 #include "key_helper.h"
@@ -15,10 +12,10 @@ ffi.set_source(
 #include "session_cipher.h"
 #include "protocol.h"
     """,
-    include_dirs=[str(source_dir / 'libs' / 'libsignal-protocol-c' / 'src')],
+    include_dirs=[str(p/'include'/'signal') for p in path_dirs], #['libsignal-protocol-c/src'],
     libraries=['signal-protocol-c'],
-    library_dirs=[str(source_dir / 'build' / 'src')]
-)
+    library_dirs=[str(p/'lib') for p in path_dirs] +['libsignal-protocol-c/build/src'],
+ )
 
 if __name__ == "__main__":
     ffi.compile(verbose=True)
