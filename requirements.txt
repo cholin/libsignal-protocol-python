@@ -1,5 +1,7 @@
+wheel
 pycryptodome
 cffi
+pytest
 pytest-valgrind
-wheel
-./src/cffi
+signal-protocol-c/
+signal-protocol-cffi/

@@ -6,10 +6,6 @@ addons:
       - cmake
       - valgrind
 install:
-  - cmake --version
-  - cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild libs/libsignal-protocol-c
-  - make -C build
-  - ls build/
   - pip install -r requirements.txt
 script:
   - PYTHONMALLOC=malloc valgrind --show-leak-kinds=definite --log-file=/tmp/valgrind-output python -m pytest -s -vv --valgrind --valgrind-log=/tmp/valgrind-output

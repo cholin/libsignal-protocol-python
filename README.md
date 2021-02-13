@@ -19,19 +19,16 @@ Get Started
 > git submodule update --init --recursive
 ```
 
-### Build libsignal-protocol-c as library
-```
-> cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POSITION_INDEPENDENT_CODE=ON libs/libsignal-protocol-c -Bbuild
-> make -C build
-```
-
-Note: Needs cmake >= 3.13 (for B-Flag support, otherwise create by yourself and call cmake from within build directory)
-
 ### Create environment and install dependencies
 ```
 > python -m venv env
 > . env/bin/activate
 > pip install -r requirements.txt
+```
+
+### Run tests
+```
+> python -m pytest
 ```
 
 Example
@@ -70,13 +67,4 @@ serialized = (lib.CIPHERTEXT_PREKEY_TYPE, ciphertext.serialize())
 plaintext = bob.session(Address.create(b'alice', 1)).decrypt(*serialized)
 assert plaintext.bin() == msg
 print(plaintext.bin(), msg)
-```
-
-Tests
------
-
-Tests are written with pytest and can be started as follows:
-
-```
-pytest -s
 ```
