@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from cffi import ffi, lib, StructBinder
+from cffi import ffi, StructBinder, invoke
 from keys import RatchetIdentityKeyPair
 from buffer import Buffer
 
@@ -31,13 +31,16 @@ class VolatileIdentityKeyStore(IdentityKeyStore):
         self.identity_key_pair = RatchetIdentityKeyPair.generate(ctx)
         
         self.local_registration_id = ffi.new('uint32_t*')
-        lib.signal_protocol_key_helper_generate_registration_id(self.local_registration_id, 0, ctx.value)
+        invoke('signal_protocol_key_helper_generate_registration_id',
+               self.local_registration_id, 0, ctx.value)
 
         self.trustedKeys = {}
 
     def get_identity_key_pair(self, public_data, private_data):
-        lib.ec_public_key_serialize(public_data, self.identity_key_pair.public_key.ptr)
-        lib.ec_private_key_serialize(private_data, self.identity_key_pair.private_key.ptr)
+        invoke('ec_public_key_serialize', public_data,
+               self.identity_key_pair.public_key.ptr)
+        invoke('ec_private_key_serialize', private_data,
+               self.identity_key_pair.private_key.ptr)
         return 0
 
     def get_local_registration_id(self, registration_id):

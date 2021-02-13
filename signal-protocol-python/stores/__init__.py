@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from cffi import ffi, lib, GenericBinder
+from cffi import ffi, lib, GenericBinder, invoke
 from keys import RatchetIdentityKeyPair
 from stores.pre_key import VolatilePreKeyStore, VolatileSignedPreKeyStore
 from stores.identity_key import VolatileIdentityKeyStore
@@ -15,22 +15,22 @@ class ProtocolStore(GenericBinder, ABC):
 
         self.ctx = ctx
 
-        lib.signal_protocol_store_context_create(self._ptr, ctx.value)
+        invoke('signal_protocol_store_context_create', self._ptr, ctx.value)
 
         # add callbacks
-        lib.signal_protocol_store_context_set_session_store(
-                self.value, self.get_session_store().ptr)
-        lib.signal_protocol_store_context_set_pre_key_store(
-                self.value, self.get_pre_key_store().ptr)
-        lib.signal_protocol_store_context_set_sender_key_store(
-                self.value, self.get_sender_key_store().ptr)
-        lib.signal_protocol_store_context_set_signed_pre_key_store(
-                self.value, self.get_signed_pre_key_store().ptr)
-        lib.signal_protocol_store_context_set_identity_key_store(
-                self.value, self.get_identity_key_store().ptr)
+        invoke('signal_protocol_store_context_set_session_store',
+               self.value, self.get_session_store().ptr)
+        invoke('signal_protocol_store_context_set_pre_key_store',
+               self.value, self.get_pre_key_store().ptr)
+        invoke('signal_protocol_store_context_set_sender_key_store',
+               self.value, self.get_sender_key_store().ptr)
+        invoke('signal_protocol_store_context_set_signed_pre_key_store',
+               self.value, self.get_signed_pre_key_store().ptr)
+        invoke('signal_protocol_store_context_set_identity_key_store',
+               self.value, self.get_identity_key_store().ptr)
 
     def __del__(self):
-        lib.signal_protocol_store_context_destroy(self.value)
+        invoke('signal_protocol_store_context_destroy', self.value)
 
     @abstractmethod
     def get_session_store():
@@ -55,21 +55,24 @@ class ProtocolStore(GenericBinder, ABC):
     @property
     def identity(self):
         identity = RatchetIdentityKeyPair()
-        lib.signal_protocol_identity_get_key_pair(self.value, identity._ptr)
+        invoke('signal_protocol_identity_get_key_pair', self.value,
+               identity._ptr)
         return identity
 
     @property
     def registration_id(self):
         uint32 = ffi.new('uint32_t*')
-        lib.signal_protocol_identity_get_local_registration_id(self.value, uint32)
+        invoke('signal_protocol_identity_get_local_registration_id',
+               self.value, uint32)
         return int(uint32[0])
 
     def save_identity(self, address, identity_pub_key):
-        return lib.signal_protocol_identity_save_identity(self.value, address.ptr, identity_pub_key.ptr)
+        return invoke('signal_protocol_identity_save_identity', self.value,
+                      address.ptr, identity_pub_key.ptr)
 
     def is_trusted_identity(self, address, identity_public_key):
-        return lib.signal_protocol_identity_is_trusted_identity(self.value,
-            address.ptr, identity_public_key.ptr) == 1
+        return invoke('signal_protocol_identity_is_trusted_identity',
+                      self.value, address.ptr, identity_public_key.ptr) == 1
 
 
 # int signal_protocol_session_load_session(signal_protocol_store_context *context, session_record **record, const signal_protocol_address *address);

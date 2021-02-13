@@ -3,7 +3,7 @@ from Crypto.Hash import HMAC, SHA256, SHA512
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from abc import ABC, abstractmethod
-from cffi import ffi, lib, StructBinder
+from cffi import ffi, lib, StructBinder, invoke
 
 
 class CryptoProvider(StructBinder, ABC):
@@ -90,7 +90,7 @@ class CryptoPyProvider(CryptoProvider):
     def hmac_sha256_final_func(self, hmac_context, output):
         hmac = ffi.from_handle(hmac_context)
         digest = hmac.digest()
-        output[0] = lib.signal_buffer_create(digest, len(digest))
+        output[0] = invoke('signal_buffer_create', digest, len(digest))
         return 0
 
     def hmac_sha256_cleanup_func(self, hmac_context):
@@ -114,7 +114,7 @@ class CryptoPyProvider(CryptoProvider):
     def sha512_digest_final_func(self, digest_context, output):
         sha512 = ffi.from_handle(digest_context)
         digest = sha512.digest()
-        output[0] = lib.signal_buffer_create(digest, len(digest))
+        output[0] = invoke('signal_buffer_create', digest, len(digest))
         return 0
 
     def sha512_digest_cleanup_func(self, digest_context):
@@ -138,7 +138,7 @@ class CryptoPyProvider(CryptoProvider):
         cipher = AES.new(k, mode, i)
         padded = padding(m)
         ciphertext = cipher.encrypt(padded)
-        output[0] = lib.signal_buffer_create(ciphertext, len(ciphertext))
+        output[0] = invoke('signal_buffer_create', ciphertext, len(ciphertext))
 
         return 0
 
@@ -157,6 +157,6 @@ class CryptoPyProvider(CryptoProvider):
         cipher = AES.new(k, mode, i)
         plaintext = cipher.decrypt(c)
         unpadded = unpadding(plaintext)
-        output[0] = lib.signal_buffer_create(unpadded, len(unpadded))
+        output[0] = invoke('signal_buffer_create', unpadded, len(unpadded))
 
         return 0

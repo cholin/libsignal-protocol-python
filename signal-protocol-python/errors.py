@@ -1,4 +1,5 @@
-from cffi import lib, RefCountedPointer
+import numbers
+from cffi import lib, ffi
 
 
 class LibSignalError(Exception):
@@ -53,7 +54,7 @@ class UntrustedIdentityError(LibSignalError):
     code = lib.SG_ERR_UNTRUSTED_IDENTITY
 
 
-class VrfSignatureVerificaitonError(LibSignalError):
+class VrfSignatureVerificationError(LibSignalError):
     code = lib.SG_ERR_VRF_SIG_VERIF_FAILED
 
 
@@ -69,13 +70,16 @@ class FingerprintIdentificationMismatchError(LibSignalError):
     code = lib.SG_ERR_FP_IDENT_MISMATCH
 
 
-def raise_on_error(code):
+def raise_on_error(code, nullable=False):
     error_clses = [LibSignalError, NoMemory, InvalidArgument, DuplicateMessageError, InvalidKeyError, InvalidKeyIDError, InvalidMACError, InvalidMessageError, InvalidVersionError, LegacyMessageError,
-                   NoSessionError, StaleKeyExchangeError, UntrustedIdentityError, VrfSignatureVerificaitonError, InvalidProtoBufError, FingerprintVersionMismatchError, FingerprintIdentificationMismatchError]
+                   NoSessionError, StaleKeyExchangeError, UntrustedIdentityError, VrfSignatureVerificationError, InvalidProtoBufError, FingerprintVersionMismatchError, FingerprintIdentificationMismatchError]
 
-    # error codes are negative integers
-    if code >= 0:
-        return
+    if not nullable and code == ffi.NULL:
+        code = lib.SG_ERR_UNKNOWN
+
+    # error codes are negative integers, return in other cases
+    if not isinstance(code, numbers.Number) or code >= 0:
+        return code
 
     for cls in error_clses:
         if cls.code == code:

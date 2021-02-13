@@ -1,4 +1,4 @@
-from cffi import ffi, lib, GenericBinder
+from cffi import ffi, lib, GenericBinder, invoke
 from threading import RLock
 from abc import ABC, abstractmethod
 from crypto import CryptoPyProvider
@@ -14,18 +14,18 @@ class SignalContext(GenericBinder, ABC):
         # handle to be used as user_data. To prevent gc of this pointer we
         # store it in the instance itself
         self._handle = ffi.new_handle(self)
-        lib.signal_context_create(self.ptr, self._handle)
+        invoke('signal_context_create', self.ptr, self._handle)
     
-        lib.signal_context_set_crypto_provider(self.value,
-                                               self.get_crypto_provider())
+        invoke('signal_context_set_crypto_provider', self.value,
+               self.get_crypto_provider())
 
-        lib.signal_context_set_locking_functions(self.value, lib.signal_lock,
-                                                 lib.signal_unlock)
+        invoke('signal_context_set_locking_functions', self.value,
+               lib.signal_lock, lib.signal_unlock)
 
-        lib.signal_context_set_log_function(self.value, lib.signal_log)
-    
+        invoke('signal_context_set_log_function', self.value, lib.signal_log)
+
     def __del__(self):
-        lib.signal_context_destroy(self.value)
+        invoke('signal_context_destroy', self.value)
 
     @abstractmethod
     def get_crypto_provider(self):

@@ -1,4 +1,4 @@
-from cffi import lib, RefCountedPointer
+from cffi import lib, RefCountedPointer, invoke
 from buffer import Buffer
 from curve import EcPublicKey
 
@@ -7,10 +7,11 @@ class CiphertextMsg(RefCountedPointer):
 
     @property
     def type(self):
-        return lib.ciphertext_message_get_type(self.ptr)
+        return invoke('ciphertext_message_get_type', self.ptr)
 
     def serialize(self):
-        return Buffer.fromptr(lib.ciphertext_message_get_serialized(self.ptr))
+        ptr = invoke('ciphertext_message_get_serialized', self.ptr)
+        return Buffer.fromptr(ptr)
 
 
 class SignalMsg(RefCountedPointer):
@@ -21,43 +22,41 @@ class SignalMsg(RefCountedPointer):
         self.ctx = ctx
 
     def __copy__(self):
-        copied = SignalMsg(ctx)
-        lib.signal_message_copy(self._ptr, self.value, copied.ctx.value)
+        copied = SignalMsg(self.ctx)
+        invoke('signal_message_copy', self._ptr, self.value, copied.ctx.value)
         return copied
 
     @property
     def sender_ratchet_public_key(self):
         pub_key = EcPublicKey()
-        pub_key.ptr = lib.signal_message_get_sender_ratchet_key(self.ptr)
+        pub_key.ptr = invoke('signal_message_get_sender_ratchet_key', self.ptr)
         return pub_key
 
     @property
     def version(self):
-        return lib.signal_message_get_message_version(self.ptr)
+        return invoke('signal_message_get_message_version', self.ptr)
 
     @property
     def counter(self):
-        return lib.signal_message_get_counter(self.ptr)
+        return invoke('signal_message_get_counter', self.ptr)
 
     @property
     def body(self):
-        return Buffer.fromptr(lib.signal_message_get_body(self.ptr))
-
+        ptr = invoke('signal_message_get_body', self.ptr)
+        return Buffer.fromptr(ptr)
 
     def verify(self, sender_identity, receiver_identity, mac):
-        result = lib.signal_message_verify_mac(sender_identity.ptr,
-                                               receiver_identity.ptr,
-                                               mac.data, len(mac),
-                                               self.ctx.value)
+        result = invoke('signal_message_verify_mac', sender_identity.ptr,
+                        receiver_identity.ptr, mac.data, len(mac),
+                        self.ctx.value)
         return result == 1
 
 
     @classmethod
     def deserialize(cls, ctx, serialized):
         msg = SignalMsg(ctx)
-        lib.signal_message_deserialize(msg._ptr,
-                                       serialized.data, len(serialized),
-                                       ctx.value)
+        invoke('signal_message_deserialize', msg._ptr,
+               serialized.data, len(serialized), ctx.value)
         return msg
 
 # int signal_message_create(signal_message **message, uint8_t message_version,
@@ -71,7 +70,6 @@ class SignalMsg(RefCountedPointer):
         pass
 
 
-
 class PreKeySignalMsg(RefCountedPointer):
     cdecl = 'pre_key_signal_message *'
 
@@ -80,54 +78,55 @@ class PreKeySignalMsg(RefCountedPointer):
         self.ctx = ctx
 
     def __copy__(self):
-        copied = PreKeySignalMsg(ctx)
-        lib.pre_key_signal_message_copy(self._ptr, self.value, copied.ctx.value)
+        copied = PreKeySignalMsg(self.ctx)
+        invoke('pre_key_signal_message_copy', self._ptr, self.value,
+               copied.ctx.value)
         return copied
 
     @property
     def version(self):
-        return lib.pre_key_signal_message_get_message_version(self.ptr)
+        return invoke('pre_key_signal_message_get_message_version', self.ptr)
 
     @property
     def registration_id(self):
-        return lib.pre_key_signal_message_get_registration_id(self.ptr)
+        return invoke('pre_key_signal_message_get_registration_id', self.ptr)
 
     @property
     def identity_pub_key(self):
         pub_key = EcPublicKey()
-        pub_key.ptr = lib.pre_key_signal_message_get_identity_key(self.ptr)
+        pub_key.ptr = invoke('pre_key_signal_message_get_identity_key',
+                             self.ptr)
         return pub_key
 
     def has_pre_key_id(self):
-        return lib.pre_key_signal_message_has_pre_key_id(self.ptr) == 0
+        return invoke('pre_key_signal_message_has_pre_key_id', self.ptr) == 0
 
     @property
     def pre_key_id(self):
         if self.has_pre_key_id():
-            return lib.pre_key_signal_message_get_pre_key_id(self.ptr)
+            return invoke('pre_key_signal_message_get_pre_key_id', self.ptr)
 
     @property
     def signed_pre_key_id(self):
-        return lib.pre_key_signal_message_get_signed_pre_key_id(self.ptr)
+        return invoke('pre_key_signal_message_get_signed_pre_key_id', self.ptr)
 
     @property
     def base_key(self):
         base_key = EcPublicKey()
-        base_key.ptr = lib.pre_key_signal_message_get_base_key(self.ptr)
+        base_key.ptr = invoke('pre_key_signal_message_get_base_key', self.ptr)
         return base_key
 
     @property
     def message(self):
         msg = SignalMsg(self.ctx)
-        msg.ptr = lib.pre_key_signal_message_get_signal_message(self.ptr)
+        msg.ptr = invoke('pre_key_signal_message_get_signal_message', self.ptr)
         return msg
 
     @classmethod
     def deserialize(cls, ctx, serialized):
         msg = PreKeySignalMsg(ctx)
-        lib.pre_key_signal_message_deserialize(msg._ptr,
-                                               serialized.data, len(serialized),
-                                               ctx.value)
+        invoke('pre_key_signal_message_deserialize', msg._ptr,
+               serialized.data, len(serialized), ctx.value)
         return msg
 
 # int pre_key_signal_message_create(pre_key_signal_message **pre_key_message,
