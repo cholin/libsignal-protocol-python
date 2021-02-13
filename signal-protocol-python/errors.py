@@ -69,7 +69,7 @@ class FingerprintIdentificationMismatchError(LibSignalError):
     code = lib.SG_ERR_FP_IDENT_MISMATCH
 
 
-def handle_error(code):
+def raise_on_error(code):
     error_clses = [LibSignalError, NoMemory, InvalidArgument, DuplicateMessageError, InvalidKeyError, InvalidKeyIDError, InvalidMACError, InvalidMessageError, InvalidVersionError, LegacyMessageError,
                    NoSessionError, StaleKeyExchangeError, UntrustedIdentityError, VrfSignatureVerificaitonError, InvalidProtoBufError, FingerprintVersionMismatchError, FingerprintIdentificationMismatchError]
 

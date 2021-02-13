@@ -3,7 +3,7 @@ from buffer import Buffer
 from messages import CiphertextMsg
 from keys import SessionPreKeyBundle
 from messages import PreKeySignalMsg, SignalMsg
-from errors import handle_error
+from errors import raise_on_error
 
 
 class SessionBuilder(Pointer):
@@ -14,7 +14,7 @@ class SessionBuilder(Pointer):
 
     def process_pre_key_bundle(self, bundle):
         result = lib.session_builder_process_pre_key_bundle(self.value, bundle.ptr)
-        handle_error(result)
+        raise_on_error(result)
         return result == lib.SG_SUCCESS
 
     @classmethod
@@ -22,7 +22,7 @@ class SessionBuilder(Pointer):
         builder = SessionBuilder()
         builder.address = address
         result = lib.session_builder_create(builder._ptr, store.value, builder.address.ptr, ctx.value)
-        handle_error(result)
+        raise_on_error(result)
         return builder
 
 
@@ -36,7 +36,7 @@ class SessionCipher(Pointer):
     def version(self):
         uint32 = ffi.new('uint32_t*')
         result = lib.session_cipher_get_session_version(self.value, uint32)
-        handle_error(result)
+        raise_on_error(result)
         return uint32[0]
 
     @property
@@ -53,13 +53,13 @@ class SessionCipher(Pointer):
     def decrypt(self, ciphertext):
         plaintext = Buffer()
         result = lib.session_cipher_decrypt_signal_message(self.value, ciphertext.ptr, ffi.NULL, plaintext._ptr)
-        handle_error(result)
+        raise_on_error(result)
         return plaintext
 
     def decrypt_pre_key_signal_msg(self, ciphertext):
         plaintext = Buffer()
         result = lib.session_cipher_decrypt_pre_key_signal_message(self.value, ciphertext.ptr, ffi.NULL, plaintext._ptr)
-        handle_error(result)
+        raise_on_error(result)
         return plaintext
 
     @classmethod
