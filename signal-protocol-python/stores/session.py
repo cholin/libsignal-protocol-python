@@ -58,9 +58,7 @@ class VolatileSessionStore(SessionStore):
 
     def store_session_func(self, address, record, record_len, user_record,
                            user_record_len):
-        print("pre join", address.name, address.name_len)
         key = self.join_address(address)
-        print("storing", key, record, record_len)
         self.sessions[key] = Buffer.create(record, record_len)
         return 0
 

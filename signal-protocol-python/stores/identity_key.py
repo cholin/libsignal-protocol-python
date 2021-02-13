@@ -52,21 +52,16 @@ class VolatileIdentityKeyStore(IdentityKeyStore):
 
     def save_identity(self, address, key_data, key_len):
         key = self.get_key_for(address)
-        print("save identity", key)
         self.trustedKeys[key] = Buffer.create(key_data, key_len)
         return 0
 
     def is_trusted_identity(self, address, key_data, key_len):
         key = self.get_key_for(address)
-        print('is_trusted_identity', key)
         data = Buffer.create(key_data, key_len)
         try:
             if data == self.trustedKeys[key]:
-                print("yeea")
                 return 1
         except KeyError:
-            print("yeea inserted")
             self.save_identity(address, key_data, key_len)
             return 1
-        print("no")
         return 0

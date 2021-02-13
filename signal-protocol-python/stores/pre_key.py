@@ -50,7 +50,6 @@ class VolatilePreKeyStore(PreKeyStore):
         self._keys = {}
 
     def load_pre_key(self, record, pre_key_id):
-        print("getting pre_key", pre_key_id)
         if pre_key_id not in self._keys:
             return lib.SG_ERR_INVALID_KEY_ID
         record[0] = copy(self._keys[pre_key_id]).release()
@@ -61,7 +60,6 @@ class VolatilePreKeyStore(PreKeyStore):
         return 1
 
     def contains_pre_key(self, pre_key_id):
-        print("checking for key", pre_key_id)
         if pre_key_id in self._keys:
             return 1
         return 0
