@@ -1,0 +1,2 @@
+include libsignal-protocol-c.h
+include stubs/*.h
