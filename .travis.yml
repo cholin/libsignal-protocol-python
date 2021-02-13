@@ -6,6 +6,6 @@ addons:
       - cmake
       - valgrind
 install:
-  - pip install -r requirements.txt
+  - pip install -r requirements.txt -vv
 script:
   - PYTHONMALLOC=malloc valgrind --show-leak-kinds=definite --log-file=/tmp/valgrind-output python -m pytest -s -vv --valgrind --valgrind-log=/tmp/valgrind-output
