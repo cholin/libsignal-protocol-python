@@ -1,6 +1,7 @@
-from cffi import lib, RefCountedPointer, invoke
+from cffi import RefCountedPointer, invoke
 from buffer import Buffer
 from curve import EcPublicKey
+
 
 class CiphertextMsg(RefCountedPointer):
     cdecl = 'ciphertext_message*'
@@ -50,7 +51,6 @@ class SignalMsg(RefCountedPointer):
                         receiver_identity.ptr, mac.data, len(mac),
                         self.ctx.value)
         return result == 1
-
 
     @classmethod
     def deserialize(cls, ctx, serialized):

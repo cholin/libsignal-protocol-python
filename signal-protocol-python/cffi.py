@@ -25,7 +25,7 @@ class Pointer:
     """
     def __init__(self):
         super(Pointer, self).__init__()
-        #print("Allocating " + self.cdecl)
+        # print("Allocating " + self.cdecl)
         self._ptr = ffi.new(self.cdecl)
 
     def __copy__(self):
@@ -166,13 +166,13 @@ class GenericBinder(Pointer):
             func = partial(cls._invoke, name)
             ffi.def_extern(name=name)(func)
             setattr(cls, '_'+name, staticmethod(func))
-            #print("registered %s in %s" % (name, cls))
+            # print("registered %s in %s" % (name, cls))
 
     @classmethod
     def _invoke(cls, name, *args):
         params = list(args)
         instance = ffi.from_handle(params.pop())  # get instance
-        #print("\nInvoking %s.%s(" % (cls.__name__, name), *params, ")\n")
+        # print("\nInvoking %s.%s(" % (cls.__name__, name), *params, ")\n")
         return getattr(instance, name)(*params)
 
 
@@ -214,9 +214,9 @@ class StructBinder(GenericBinder):
 
     def bind_py_methods(self):
         for method in self.binding_methods:
-            #print("setting binding method", method, getattr(lib, method))
+            # print("setting binding method", method, getattr(lib, method))
             setattr(self.ptr, method, getattr(lib, method))
 
     def destroy_func(self):
         pass
-        #print("destroyed_func called()")
+        # print("destroyed_func called()")

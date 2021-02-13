@@ -1,4 +1,4 @@
-from cffi import ffi, lib, RefCountedPointer, invoke
+from cffi import ffi, RefCountedPointer, invoke
 from buffer import Buffer
 from curve import EcPublicKey, EcPrivateKey, EcKeyPair
 from datetime import datetime
@@ -124,7 +124,7 @@ class SessionSignedPreKey(RefCountedPointer):
     def timestamp(self):
         ts = invoke('session_signed_pre_key_get_timestamp', self.ptr)
         return datetime.fromtimestamp(ts)
-    
+
     @property
     def signed_pub_key(self):
         pub_key = self.key_pair.public_key

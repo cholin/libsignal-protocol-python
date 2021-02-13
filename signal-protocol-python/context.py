@@ -7,7 +7,7 @@ from crypto import CryptoPyProvider
 class SignalContext(GenericBinder, ABC):
     cdecl = 'signal_context**'
     binding_methods = ['signal_lock', 'signal_unlock', 'signal_log']
-    
+
     def __init__(self, **kwargs):
         super(SignalContext, self).__init__(**kwargs)
 
@@ -15,7 +15,7 @@ class SignalContext(GenericBinder, ABC):
         # store it in the instance itself
         self._handle = ffi.new_handle(self)
         invoke('signal_context_create', self.ptr, self._handle)
-    
+
         invoke('signal_context_set_crypto_provider', self.value,
                self.get_crypto_provider())
 

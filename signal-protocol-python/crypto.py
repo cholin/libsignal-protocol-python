@@ -55,11 +55,13 @@ class CryptoProvider(StructBinder, ABC):
     # AES
     #
     @abstractmethod
-    def encrypt_func(self, output, cipher, key, key_len, iv, iv_len, plaintext, plaintext_len):
+    def encrypt_func(self, output, cipher, key, key_len, iv, iv_len, plaintext,
+                     plaintext_len):
         pass
 
     @abstractmethod
-    def decrypt_func(self, output, cipher, key, key_len, iv, iv_len, ciphertext, ciphertext_len):
+    def decrypt_func(self, output, cipher, key, key_len, iv, iv_len,
+                     ciphertext, ciphertext_len):
         pass
 
 
@@ -123,7 +125,8 @@ class CryptoPyProvider(CryptoProvider):
     #
     # AES
     #
-    def encrypt_func(self, output, cipher, key, key_len, iv, iv_len, plaintext, plaintext_len):
+    def encrypt_func(self, output, cipher, key, key_len, iv, iv_len, plaintext,
+                     plaintext_len):
         k = ffi.buffer(key, key_len)[:]
         i = ffi.buffer(iv, iv_len)[:]
         m = ffi.buffer(plaintext, plaintext_len)[:]
@@ -142,7 +145,8 @@ class CryptoPyProvider(CryptoProvider):
 
         return 0
 
-    def decrypt_func(self, output, cipher, key, key_len, iv, iv_len, ciphertext, ciphertext_len):
+    def decrypt_func(self, output, cipher, key, key_len, iv, iv_len,
+                     ciphertext, ciphertext_len):
         k = ffi.buffer(key, key_len)[:]
         i = ffi.buffer(iv, iv_len)[:]
         c = ffi.buffer(ciphertext, ciphertext_len)[:]

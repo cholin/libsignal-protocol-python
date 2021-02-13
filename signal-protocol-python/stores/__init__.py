@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from cffi import ffi, lib, GenericBinder, invoke
+from cffi import ffi, GenericBinder, invoke
 from keys import RatchetIdentityKeyPair
 from stores.pre_key import VolatilePreKeyStore, VolatileSignedPreKeyStore
 from stores.identity_key import VolatileIdentityKeyStore
@@ -95,7 +95,6 @@ class ProtocolStore(GenericBinder, ABC):
 # int signal_protocol_identity_is_trusted_identity(signal_protocol_store_context *context, const signal_protocol_address *address, ec_public_key *identity_key);
 # int signal_protocol_sender_key_store_key(signal_protocol_store_context *context, const signal_protocol_sender_key_name *sender_key_name, sender_key_record *record);
 # int signal_protocol_sender_key_load_key(signal_protocol_store_context *context, sender_key_record **record, const signal_protocol_sender_key_name *sender_key_name);
-
 
 
 class VolatileProtocolStore(ProtocolStore):

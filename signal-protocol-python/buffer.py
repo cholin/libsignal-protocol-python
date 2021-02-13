@@ -1,4 +1,4 @@
-from cffi import ffi, lib, Pointer, invoke
+from cffi import ffi, Pointer, invoke
 from base64 import b64encode, b64decode
 
 

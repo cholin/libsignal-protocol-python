@@ -71,8 +71,13 @@ class FingerprintIdentificationMismatchError(LibSignalError):
 
 
 def raise_on_error(code, nullable=False):
-    error_clses = [LibSignalError, NoMemory, InvalidArgument, DuplicateMessageError, InvalidKeyError, InvalidKeyIDError, InvalidMACError, InvalidMessageError, InvalidVersionError, LegacyMessageError,
-                   NoSessionError, StaleKeyExchangeError, UntrustedIdentityError, VrfSignatureVerificationError, InvalidProtoBufError, FingerprintVersionMismatchError, FingerprintIdentificationMismatchError]
+    error_clses = [LibSignalError, NoMemory, InvalidArgument,
+                   DuplicateMessageError, InvalidKeyError, InvalidKeyIDError,
+                   InvalidMACError, InvalidMessageError, InvalidVersionError,
+                   LegacyMessageError, NoSessionError, StaleKeyExchangeError,
+                   UntrustedIdentityError, VrfSignatureVerificationError,
+                   InvalidProtoBufError, FingerprintVersionMismatchError,
+                   FingerprintIdentificationMismatchError]
 
     if not nullable and code == ffi.NULL:
         code = lib.SG_ERR_UNKNOWN

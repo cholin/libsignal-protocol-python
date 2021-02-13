@@ -1,4 +1,4 @@
-from cffi import lib, RefCountedPointer, invoke
+from cffi import RefCountedPointer, invoke
 from buffer import Buffer
 
 

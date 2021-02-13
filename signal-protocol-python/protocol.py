@@ -1,7 +1,7 @@
 
-from cffi import ffi, lib, invoke
+from cffi import ffi, invoke
 from address import Address
-from keys import RatchetIdentityKeyPair, SessionSignedPreKey, SessionPreKey
+from keys import SessionSignedPreKey, SessionPreKey
 from stores import VolatileProtocolStore
 from context import SignalPyContext
 from session import Session
@@ -12,7 +12,7 @@ class SignalProtocol:
         self.address = Address.create(name, 1)
         self.ctx = SignalPyContext()
         self.store = VolatileProtocolStore(self.ctx)
-    
+
     @property
     def device_id(self):
         return self.address.device_id
@@ -29,7 +29,8 @@ class SignalProtocol:
         return self.store.identity
 
     def generate_signed_pre_key(self):
-        signed_pre_key = SessionSignedPreKey.generate(self.ctx, self.identity, 1)
+        signed_pre_key = SessionSignedPreKey.generate(self.ctx, self.identity,
+                                                      1)
         invoke('signal_protocol_signed_pre_key_store_key', self.store.value,
                signed_pre_key.ptr)
         return signed_pre_key.signed_pub_key
@@ -40,7 +41,7 @@ class SignalProtocol:
             invoke('signal_protocol_pre_key_store_key', self.store.value,
                    pre_key.ptr)
             yield pre_key.public_key
-    
+
     def session(self, recipient, device_id):
         address = Address.create(recipient, device_id)
         return Session(self.ctx, self.store, address)
