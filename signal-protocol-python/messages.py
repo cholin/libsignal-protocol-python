@@ -16,11 +16,13 @@ class CiphertextMsg(RefCountedPointer):
 class SignalMsg(RefCountedPointer):
     cdecl = 'signal_message*'
 
-    # TODO: add context
+    def __init__(self, ctx):
+        super(SignalMsg, self).__init__()
+        self.ctx = ctx
 
     def __copy__(self):
-        copied = SignalMsg()
-        lib.signal_message_copy(self._ptr, self.value, self.ctx.value)
+        copied = SignalMsg(ctx)
+        lib.signal_message_copy(self._ptr, self.value, copied.ctx.value)
         return copied
 
     @property
@@ -41,29 +43,18 @@ class SignalMsg(RefCountedPointer):
     def body(self):
         return Buffer.fromptr(lib.signal_message_get_body(self.ptr))
 
-# int signal_message_is_legacy(const uint8_t *data, size_t len);
-    @property
-    def is_legacy(self):
-        pass
 
-
-# /**
-#  * Verify the MAC on the Signal message.
-#  *
-#  * @return 1 if verified, 0 if invalid, negative on error
-#  */
-# int signal_message_verify_mac(signal_message *message,
-#         ec_public_key *sender_identity_key,
-#         ec_public_key *receiver_identity_key,
-#         const uint8_t *mac_key, size_t mac_key_len,
-#         signal_context *global_context);
-    def verify(self):
-        pass
+    def verify(self, sender_identity, receiver_identity, mac):
+        result = lib.signal_message_verify_mac(sender_identity.ptr,
+                                               receiver_identity.ptr,
+                                               mac.data, len(mac),
+                                               self.ctx.value)
+        return result == 1
 
 
     @classmethod
     def deserialize(cls, ctx, serialized):
-        msg = SignalMsg()
+        msg = SignalMsg(ctx)
         lib.signal_message_deserialize(msg._ptr,
                                        serialized.data, len(serialized),
                                        ctx.value)
@@ -83,6 +74,15 @@ class SignalMsg(RefCountedPointer):
 
 class PreKeySignalMsg(RefCountedPointer):
     cdecl = 'pre_key_signal_message *'
+
+    def __init__(self, ctx):
+        super(PreKeySignalMsg, self).__init__()
+        self.ctx = ctx
+
+    def __copy__(self):
+        copied = PreKeySignalMsg(ctx)
+        lib.pre_key_signal_message_copy(self._ptr, self.value, copied.ctx.value)
+        return copied
 
     @property
     def version(self):
@@ -118,30 +118,23 @@ class PreKeySignalMsg(RefCountedPointer):
 
     @property
     def message(self):
-        msg = SignalMsg()
+        msg = SignalMsg(self.ctx)
         msg.ptr = lib.pre_key_signal_message_get_signal_message(self.ptr)
         return msg
 
     @classmethod
     def deserialize(cls, ctx, serialized):
-        msg = PreKeySignalMsg()
+        msg = PreKeySignalMsg(ctx)
         lib.pre_key_signal_message_deserialize(msg._ptr,
                                                serialized.data, len(serialized),
                                                ctx.value)
         return msg
-
-
 
 # int pre_key_signal_message_create(pre_key_signal_message **pre_key_message,
 #         uint8_t message_version, uint32_t registration_id, const uint32_t *pre_key_id,
 #         uint32_t signed_pre_key_id, ec_public_key *base_key, ec_public_key *identity_key,
 #         signal_message *message,
 #         signal_context *global_context);
-
-# int pre_key_signal_message_deserialize(pre_key_signal_message **message,
-#         const uint8_t *data, size_t len,
-#         signal_context *global_context);
-
-# int pre_key_signal_message_copy(pre_key_signal_message **message, pre_key_signal_message *other_message, signal_context *global_context);
-
-# signal_message *pre_key_signal_message_get_signal_message(const pre_key_signal_message *message);
+    @classmethod
+    def create(cls):
+        pass
