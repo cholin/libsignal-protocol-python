@@ -38,7 +38,8 @@ Get Started
 Example
 -------
 
-Alice and Bob example code (see *tests/test_protocol.py*)
+Alice and Bob example code (see *tests/test_protocol.py*) with an in-memory
+store:
 
 ```python
 # create identity for bob (with keys)
