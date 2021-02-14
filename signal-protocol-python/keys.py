@@ -150,10 +150,10 @@ class SessionSignedPreKey(RefCountedPointer):
 
     @classmethod
     def deserialize(cls, ctx, serialized):
-        pre_key = SessionPreKey()
-        invoke('session_signed_pre_key_serialize'. pre_key._ptr,
+        signed_pre_key = SessionSignedPreKey()
+        invoke('session_signed_pre_key_deserialize', signed_pre_key._ptr,
                serialized.data, len(serialized), ctx.value)
-        return pre_key
+        return signed_pre_key
 
     @classmethod
     def create(cls, id, datetime, key_pair, signature):
