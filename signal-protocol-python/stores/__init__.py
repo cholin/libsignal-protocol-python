@@ -6,9 +6,10 @@ from keys import RatchetIdentityKeyPair
 class ProtocolStore(GenericBinder, ABC):
     cdecl = 'signal_protocol_store_context **'
 
-    def __init__(self, ctx):
+    def __init__(self, ctx, uri=None):
         super(ProtocolStore, self).__init__()
 
+        self.uri = uri
         self.ctx = ctx
 
         invoke('signal_protocol_store_context_create', self._ptr, ctx.value)

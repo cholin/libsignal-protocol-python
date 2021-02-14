@@ -47,13 +47,13 @@ class SessionCipher(Pointer):
     def encrypt(self, message):
         ciphertext = CiphertextMsg()
         invoke('session_cipher_encrypt', self.value,
-                message.data, len(message), ciphertext._ptr)
+               message.data, len(message), ciphertext._ptr)
         return ciphertext
     
     def decrypt(self, ciphertext):
         plaintext = Buffer()
         invoke('session_cipher_decrypt_signal_message', self.value,
-              ciphertext.ptr, ffi.NULL, plaintext._ptr)
+               ciphertext.ptr, ffi.NULL, plaintext._ptr)
         return plaintext
 
     def decrypt_pre_key_signal_msg(self, ciphertext):
@@ -84,7 +84,8 @@ class Session:
         return invoke('signal_protocol_session_contains_session',
                       self.store.value, self.recipient.ptr) == 1
 
-    def process(self, reg_id, identity_pub_key, signed_pub_pre_key, ephemeral_pub_key):
+    def process(self, reg_id, identity_pub_key, signed_pub_pre_key,
+                ephemeral_pub_key):
         self.store.save_identity(self.recipient, identity_pub_key)
 
         builder = SessionBuilder.create(self.ctx, self.store, self.recipient)
@@ -102,5 +103,7 @@ class Session:
         if msg_type == lib.CIPHERTEXT_SIGNAL_TYPE:
             ciphertext = SignalMsg.deserialize(self.ctx, serialized)
             return self.cipher.decrypt(ciphertext)
+
         ciphertext = PreKeySignalMsg.deserialize(self.ctx, serialized)
+        self.store.save_identity(self.recipient, ciphertext.identity_pub_key)
         return self.cipher.decrypt_pre_key_signal_msg(ciphertext)
