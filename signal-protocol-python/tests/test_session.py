@@ -6,20 +6,23 @@ from keys import SessionPreKey, SessionSignedPreKey, SessionPreKeyBundle
 from cffi import lib
 from messages import PreKeySignalMsg
 from stores.volatile import VolatileProtocolStore
+from stores.sqlite import SqliteProtocolStore
 
 
 def test_session_decrypt():
     # alice keys
     alice_ctx = SignalPyContext()
-    alice_store = VolatileProtocolStore(alice_ctx)
-    alice_identity = alice_store.identity_key_store.identity_key_pair
+    # alice_store = VolatileProtocolStore(alice_ctx)
+    alice_store = SqliteProtocolStore(alice_ctx, ':memory:')
+    alice_identity = alice_store.identity
     alice_signed_pre_key = SessionSignedPreKey.generate(alice_ctx, alice_identity, 1)
     alice_pre_key = list(SessionPreKey.generate(alice_ctx, count=1))[0]
 
     # bob keys
     bob_ctx = SignalPyContext()
-    bob_store = VolatileProtocolStore(bob_ctx)
-    bob_identity = bob_store.identity_key_store.identity_key_pair
+    # bob_store = VolatileProtocolStore(bob_ctx)
+    bob_store = SqliteProtocolStore(bob_ctx, ':memory:')
+    bob_identity = bob_store.identity
     bob_signed_pre_key = SessionSignedPreKey.generate(bob_ctx, bob_identity, 1)
     bob_pre_key = list(SessionPreKey.generate(bob_ctx, count=1))[0]
 
