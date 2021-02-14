@@ -70,8 +70,7 @@ class VolatileIdentityKeyStore(IdentityKeyStore):
             if data == self.trustedKeys[key]:
                 return 1
         except KeyError:
-            self.save_identity(address, key_data, key_len)
-            return 1
+            pass
         return 0
 
 
@@ -171,5 +170,5 @@ class VolatileSessionStore(SessionStore):
         return 1
 
     def delete_all_sessions_func(self, name, name_len):
-        self.sessions.clear
+        self.sessions.clear()
         return 0
