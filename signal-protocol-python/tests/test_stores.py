@@ -1,11 +1,9 @@
 import pytest
 from crypto import CryptoPyProvider
 from context import SignalPyContext
-from stores.pre_key import VolatilePreKeyStore, VolatileSignedPreKeyStore
-from stores.identity_key import VolatileIdentityKeyStore
-from stores.sender_key import VolatileSenderKeyStore
-from stores.session import VolatileSessionStore
-from stores import VolatileProtocolStore
+from stores.volatile import VolatileProtocolStore, VolatilePreKeyStore,    \
+                            VolatileIdentityKeyStore, VolatileSessionStore,\
+                            VolatileSenderKeyStore, VolatileSignedPreKeyStore
 
 
 def test_crypto_provider():

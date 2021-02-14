@@ -5,7 +5,7 @@ from buffer import Buffer
 from keys import SessionPreKey, SessionSignedPreKey, SessionPreKeyBundle
 from cffi import lib
 from messages import PreKeySignalMsg
-from stores import VolatileProtocolStore
+from stores.volatile import VolatileProtocolStore
 
 
 def test_session_decrypt():

@@ -2,7 +2,7 @@
 from cffi import ffi, invoke
 from address import Address
 from keys import SessionSignedPreKey, SessionPreKey
-from stores import VolatileProtocolStore
+from stores.volatile import VolatileProtocolStore
 from context import SignalPyContext
 from session import Session
 

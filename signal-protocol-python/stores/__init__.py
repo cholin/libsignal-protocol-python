@@ -1,10 +1,6 @@
 from abc import ABC, abstractmethod
-from cffi import ffi, GenericBinder, invoke
+from cffi import ffi, GenericBinder, StructBinder, invoke
 from keys import RatchetIdentityKeyPair
-from stores.pre_key import VolatilePreKeyStore, VolatileSignedPreKeyStore
-from stores.identity_key import VolatileIdentityKeyStore
-from stores.sender_key import VolatileSenderKeyStore
-from stores.session import VolatileSessionStore
 
 
 class ProtocolStore(GenericBinder, ABC):
@@ -97,24 +93,103 @@ class ProtocolStore(GenericBinder, ABC):
 # int signal_protocol_sender_key_load_key(signal_protocol_store_context *context, sender_key_record **record, const signal_protocol_sender_key_name *sender_key_name);
 
 
-class VolatileProtocolStore(ProtocolStore):
+class IdentityKeyStore(StructBinder, ABC):
+    cdecl = 'signal_protocol_identity_key_store*'
 
-    def get_session_store(self):
-        self.session_store = VolatileSessionStore()
-        return self.session_store
+    @abstractmethod
+    def get_identity_key_pair(self, public_data, private_data):
+        pass
 
-    def get_pre_key_store(self):
-        self.pre_key_store = VolatilePreKeyStore()
-        return self.pre_key_store
+    @abstractmethod
+    def get_local_registration_id(self, registration_id):
+        pass
 
-    def get_sender_key_store(self):
-        self.sender_key_store = VolatileSenderKeyStore()
-        return self.sender_key_store
+    @abstractmethod
+    def save_identity(self, address, key_data, key_len):
+        pass
 
-    def get_signed_pre_key_store(self):
-        self.signed_pre_key_store = VolatileSignedPreKeyStore()
-        return self.signed_pre_key_store
+    @abstractmethod
+    def is_trusted_identity(self, address, key_data, key_len):
+        pass
 
-    def get_identity_key_store(self):
-        self.identity_key_store = VolatileIdentityKeyStore(self.ctx)
-        return self.identity_key_store
+
+class PreKeyStore(StructBinder, ABC):
+    cdecl = 'signal_protocol_pre_key_store*'
+
+    @abstractmethod
+    def load_pre_key(self, record, pre_key_id):
+        pass
+
+    @abstractmethod
+    def store_pre_key(self, pre_key_id, record, record_len):
+        pass
+
+    @abstractmethod
+    def contains_pre_key(self, pre_key_id):
+        pass
+
+    @abstractmethod
+    def remove_pre_key(self, pre_key_id):
+        pass
+
+
+class SignedPreKeyStore(StructBinder, ABC):
+    cdecl = 'signal_protocol_signed_pre_key_store*'
+
+    @abstractmethod
+    def load_signed_pre_key(self, record, signed_pre_key_id):
+        pass
+
+    @abstractmethod
+    def store_signed_pre_key(self, signed_pre_key_id, record, record_len):
+        pass
+
+    @abstractmethod
+    def contains_signed_pre_key(self, signed_pre_key_id):
+        pass
+
+    @abstractmethod
+    def remove_signed_pre_key(self, signed_pre_key_id):
+        pass
+
+
+class SenderKeyStore(StructBinder, ABC):
+    cdecl = 'signal_protocol_sender_key_store*'
+
+    @abstractmethod
+    def store_sender_key(self, sender_key_name, record, record_len,
+                         user_record, user_record_len):
+        pass
+
+    @abstractmethod
+    def load_sender_key(self, record, user_record, sender_key_name):
+        pass
+
+
+class SessionStore(StructBinder, ABC):
+    cdecl = 'signal_protocol_session_store*'
+
+    @abstractmethod
+    def load_session_func(self, record, user_record, address):
+        pass
+
+    @abstractmethod
+    def get_sub_device_sessions_func(self, sessions, name, name_len):
+        pass
+
+    @abstractmethod
+    def store_session_func(self, address, record, record_len, user_record,
+                           user_record_len):
+        pass
+
+    @abstractmethod
+    def contains_session_func(self, address):
+        pass
+
+    @abstractmethod
+    def delete_session_func(self, address):
+        pass
+
+    @abstractmethod
+    def delete_all_sessions_func(self, name, name_len):
+        pass
