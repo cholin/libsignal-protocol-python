@@ -1,4 +1,4 @@
-from cffi import ffi, Pointer
+from .cffi import ffi, Pointer
 
 
 class Address(Pointer):

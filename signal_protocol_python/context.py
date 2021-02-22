@@ -1,7 +1,7 @@
-from cffi import ffi, lib, GenericBinder, invoke
+from .cffi import ffi, lib, GenericBinder, invoke
 from threading import RLock
 from abc import ABC, abstractmethod
-from crypto import CryptoPyProvider
+from .crypto import CryptoPyProvider
 
 
 class SignalContext(GenericBinder, ABC):

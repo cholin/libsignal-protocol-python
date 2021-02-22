@@ -1,6 +1,6 @@
-from cffi import ffi, RefCountedPointer, invoke
-from buffer import Buffer
-from curve import EcPublicKey, EcPrivateKey, EcKeyPair
+from .cffi import ffi, RefCountedPointer, invoke
+from .buffer import Buffer
+from .curve import EcPublicKey, EcPrivateKey, EcKeyPair
 from datetime import datetime
 
 
@@ -94,7 +94,7 @@ class SessionPreKey(RefCountedPointer):
         return pre_key
 
     @classmethod
-    def generate(cls, ctx, start=1, count=50):
+    def generate(cls, ctx, start=1, count=100):
         pre_key_list_cdecl = 'signal_protocol_key_helper_pre_key_list_node **'
         pre_key_list = ffi.new(pre_key_list_cdecl)
         invoke('signal_protocol_key_helper_generate_pre_keys', pre_key_list,

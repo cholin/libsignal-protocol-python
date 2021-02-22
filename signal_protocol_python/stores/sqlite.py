@@ -1,6 +1,6 @@
-from cffi import ffi, lib, invoke
-from keys import RatchetIdentityKeyPair
-from buffer import Buffer
+from ..cffi import ffi, lib, invoke
+from ..keys import RatchetIdentityKeyPair
+from ..buffer import Buffer
 from copy import copy
 import sqlite3
 from contextlib import closing
@@ -159,6 +159,17 @@ class SqlitePreKeyStore(PreKeyStore):
             pass
         return 1
 
+    def _get_all_pre_key_ids(self):
+        with closing(self.conn.cursor()) as cur:
+            cur.execute('SELECT id FROM pre_keys')
+            rows = cur.fetchall()
+            if rows is not None:
+                return [row[0] for row in rows]
+        return []
+
+    def get_all_pre_key_ids(self):
+        return [i for i in self._get_all_pre_key_ids() if i > 0]
+
 
 class SqliteSignedPreKeyStore(SignedPreKeyStore, SqlitePreKeyStore):
 
@@ -173,6 +184,9 @@ class SqliteSignedPreKeyStore(SignedPreKeyStore, SqlitePreKeyStore):
 
     def remove_signed_pre_key(self, signed_pre_key_id):
         return self.remove_pre_key(-signed_pre_key_id)
+
+    def get_all_signed_pre_key_ids(self):
+        return [abs(i) for i in self._get_all_pre_key_ids() if i < 0]
 
 
 class SqliteSenderKeyStore(SenderKeyStore):

@@ -1,9 +1,9 @@
-from context import SignalPyContext
-from buffer import Buffer
-from curve import EcKeyPair, EcPrivateKey, EcPublicKey
+from ..context import SignalPyContext
+from ..buffer import Buffer
+from ..curve import EcKeyPair, EcPrivateKey, EcPublicKey
+from ..errors import VrfSignatureVerificationError, InvalidArgument
 import pytest
 import gc
-import errors
 
 
 def teardown_method(self, method):
@@ -73,7 +73,7 @@ def test_ec_signatures():
     assert not pub_key.verify(invalid, signature)
 
     # invalid signature
-    with pytest.raises(errors.InvalidArgument):
+    with pytest.raises(InvalidArgument):
         pub_key.verify(data, invalid)
 
 
@@ -93,9 +93,9 @@ def test_ec_vrf_signatures():
 
     # wrong data
     invalid = Buffer.create(b'wrong')
-    with pytest.raises(errors.VrfSignatureVerificationError):
+    with pytest.raises(VrfSignatureVerificationError):
         pub_key.verify_vrf(ctx, invalid, signature)
 
     # invalid signature
-    with pytest.raises(errors.VrfSignatureVerificationError):
+    with pytest.raises(VrfSignatureVerificationError):
         pub_key.verify_vrf(ctx, data, invalid)

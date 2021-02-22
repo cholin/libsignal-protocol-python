@@ -1,12 +1,12 @@
-from session import SessionBuilder, SessionCipher
-from address import Address
-from context import SignalPyContext
-from buffer import Buffer
-from keys import SessionPreKey, SessionSignedPreKey, SessionPreKeyBundle
-from cffi import lib
-from messages import PreKeySignalMsg
-from stores.volatile import VolatileProtocolStore
-from stores.sqlite import SqliteProtocolStore
+from ..session import SessionBuilder, SessionCipher
+from ..address import Address
+from ..context import SignalPyContext
+from ..buffer import Buffer
+from ..keys import SessionPreKey, SessionSignedPreKey, SessionPreKeyBundle
+from ..cffi import lib
+from ..messages import PreKeySignalMsg
+from ..stores.volatile import VolatileProtocolStore
+from ..stores.sqlite import SqliteProtocolStore
 
 
 def test_session_decrypt():

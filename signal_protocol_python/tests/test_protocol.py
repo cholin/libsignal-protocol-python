@@ -1,6 +1,6 @@
-from address import Address
-from protocol import SignalProtocol
-from cffi import lib
+from ..address import Address
+from ..protocol import SignalProtocol
+from ..cffi import lib
 
 
 def test_protocol():

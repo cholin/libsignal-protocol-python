@@ -1,7 +1,7 @@
-from context import SignalPyContext
-from buffer import Buffer
-from keys import RatchetIdentityKeyPair
-from curve import EcKeyPair, EcPublicKey, EcPrivateKey
+from ..context import SignalPyContext
+from ..buffer import Buffer
+from ..keys import RatchetIdentityKeyPair
+from ..curve import EcKeyPair, EcPublicKey, EcPrivateKey
 from .data import EC_PUBLIC_KEY_HEX, EC_PRIVATE_KEY_HEX, \
                   RATCHET_IDENTITY_KEY_PAIR_HEX
 

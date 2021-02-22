@@ -1,6 +1,6 @@
-from cffi import ffi, lib, invoke
-from keys import RatchetIdentityKeyPair
-from buffer import Buffer
+from ..cffi import ffi, lib, invoke
+from ..keys import RatchetIdentityKeyPair
+from ..buffer import Buffer
 from copy import copy
 from . import ProtocolStore, IdentityKeyStore, PreKeyStore, SignedPreKeyStore,\
               SenderKeyStore, SessionStore
@@ -100,6 +100,9 @@ class VolatilePreKeyStore(PreKeyStore):
         del self._keys[pre_key_id]
         return 0
 
+    def get_all_pre_key_ids(self):
+        return [k for k, v in self._keys.items() if k > 0]
+
 
 class VolatileSignedPreKeyStore(SignedPreKeyStore, VolatilePreKeyStore):
 
@@ -114,6 +117,9 @@ class VolatileSignedPreKeyStore(SignedPreKeyStore, VolatilePreKeyStore):
 
     def remove_signed_pre_key(self, signed_pre_key_id):
         return self.remove_pre_key(-signed_pre_key_id)
+
+    def get_all_signed_pre_key_ids(self):
+        return [k for k, v in self._keys.items() if k < 0]
 
 
 class VolatileSenderKeyStore(SenderKeyStore):

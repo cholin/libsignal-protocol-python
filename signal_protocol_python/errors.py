@@ -1,5 +1,5 @@
 import numbers
-from cffi import lib, ffi
+from .cffi import lib, ffi
 
 
 class LibSignalError(Exception):

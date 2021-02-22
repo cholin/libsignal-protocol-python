@@ -1,6 +1,6 @@
-from cffi import RefCountedPointer, invoke
-from buffer import Buffer
-from curve import EcPublicKey
+from .cffi import RefCountedPointer, invoke
+from .buffer import Buffer
+from .curve import EcPublicKey
 
 
 class CiphertextMsg(RefCountedPointer):

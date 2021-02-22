@@ -1,16 +1,16 @@
 import pytest
-from cffi import ffi
-from crypto import CryptoPyProvider
-from context import SignalPyContext
-from buffer import Buffer
-from address import Address
-from curve import EcPublicKey, EcPrivateKey, EcKeyPair
-from keys import RatchetIdentityKeyPair, SessionPreKey, SessionSignedPreKey
-from stores.volatile import VolatileProtocolStore, VolatilePreKeyStore,    \
-                            VolatileIdentityKeyStore, VolatileSessionStore,\
-                            VolatileSenderKeyStore, VolatileSignedPreKeyStore
-from stores.sqlite import SqliteIdentityKeyStore, SqlitePreKeyStore, \
-                          SqliteSignedPreKeyStore, SqliteSessionStore
+from ..cffi import ffi
+from ..crypto import CryptoPyProvider
+from ..context import SignalPyContext
+from ..buffer import Buffer
+from ..address import Address
+from ..curve import EcPublicKey, EcPrivateKey, EcKeyPair
+from ..keys import RatchetIdentityKeyPair, SessionPreKey, SessionSignedPreKey
+from ..stores.volatile import VolatileProtocolStore, VolatilePreKeyStore,    \
+                              VolatileIdentityKeyStore, VolatileSessionStore,\
+                              VolatileSenderKeyStore, VolatileSignedPreKeyStore
+from ..stores.sqlite import SqliteIdentityKeyStore, SqlitePreKeyStore, \
+                            SqliteSignedPreKeyStore, SqliteSessionStore
 
 
 def test_crypto_provider():

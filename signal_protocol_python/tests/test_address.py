@@ -1,6 +1,6 @@
 import gc
 from copy import copy
-from address import Address
+from ..address import Address
 
 
 def teardown_method(self, method):

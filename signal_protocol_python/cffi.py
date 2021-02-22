@@ -1,7 +1,7 @@
 from signal_protocol_cffi import ffi, lib
 from functools import partial
 from abc import ABC, abstractmethod
-from errors import raise_on_error
+from .errors import raise_on_error
 
 
 def invoke(func_name, *args, **kwargs):

@@ -3,7 +3,7 @@ from Crypto.Hash import HMAC, SHA256, SHA512
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from abc import ABC, abstractmethod
-from cffi import ffi, lib, StructBinder, invoke
+from .cffi import ffi, lib, StructBinder, invoke
 
 
 class CryptoProvider(StructBinder, ABC):

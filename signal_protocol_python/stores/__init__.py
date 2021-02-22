@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from cffi import ffi, GenericBinder, StructBinder, invoke
-from keys import RatchetIdentityKeyPair
+from ..cffi import ffi, GenericBinder, StructBinder, invoke
+from ..keys import RatchetIdentityKeyPair
 
 
 class ProtocolStore(GenericBinder, ABC):
@@ -72,28 +72,6 @@ class ProtocolStore(GenericBinder, ABC):
                       self.value, address.ptr, identity_public_key.ptr) == 1
 
 
-# int signal_protocol_session_load_session(signal_protocol_store_context *context, session_record **record, const signal_protocol_address *address);
-# int signal_protocol_session_get_sub_device_sessions(signal_protocol_store_context *context, signal_int_list **sessions, const char *name, size_t name_len);
-# int signal_protocol_session_store_session(signal_protocol_store_context *context, const signal_protocol_address *address, session_record *record);
-# int signal_protocol_session_contains_session(signal_protocol_store_context *context, const signal_protocol_address *address);
-# int signal_protocol_session_delete_session(signal_protocol_store_context *context, const signal_protocol_address *address);
-# int signal_protocol_session_delete_all_sessions(signal_protocol_store_context *context, const char *name, size_t name_len);
-# int signal_protocol_pre_key_load_key(signal_protocol_store_context *context, session_pre_key **pre_key, uint32_t pre_key_id);
-# int signal_protocol_pre_key_store_key(signal_protocol_store_context *context, session_pre_key *pre_key);
-# int signal_protocol_pre_key_contains_key(signal_protocol_store_context *context, uint32_t pre_key_id);
-# int signal_protocol_pre_key_remove_key(signal_protocol_store_context *context, uint32_t pre_key_id);
-# int signal_protocol_signed_pre_key_load_key(signal_protocol_store_context *context, session_signed_pre_key **pre_key, uint32_t signed_pre_key_id);
-# int signal_protocol_signed_pre_key_store_key(signal_protocol_store_context *context, session_signed_pre_key *pre_key);
-# int signal_protocol_signed_pre_key_contains_key(signal_protocol_store_context *context, uint32_t signed_pre_key_id);
-# int signal_protocol_signed_pre_key_remove_key(signal_protocol_store_context *context, uint32_t signed_pre_key_id);
-# int signal_protocol_identity_get_key_pair(signal_protocol_store_context *context, ratchet_identity_key_pair **key_pair);
-# int signal_protocol_identity_get_local_registration_id(signal_protocol_store_context *context, uint32_t *registration_id);
-# int signal_protocol_identity_save_identity(signal_protocol_store_context *context, const signal_protocol_address *address, ec_public_key *identity_key);
-# int signal_protocol_identity_is_trusted_identity(signal_protocol_store_context *context, const signal_protocol_address *address, ec_public_key *identity_key);
-# int signal_protocol_sender_key_store_key(signal_protocol_store_context *context, const signal_protocol_sender_key_name *sender_key_name, sender_key_record *record);
-# int signal_protocol_sender_key_load_key(signal_protocol_store_context *context, sender_key_record **record, const signal_protocol_sender_key_name *sender_key_name);
-
-
 class IdentityKeyStore(StructBinder, ABC):
     cdecl = 'signal_protocol_identity_key_store*'
 
@@ -133,6 +111,10 @@ class PreKeyStore(StructBinder, ABC):
     def remove_pre_key(self, pre_key_id):
         pass
 
+    @abstractmethod
+    def get_all_pre_key_ids(self):
+        pass
+
 
 class SignedPreKeyStore(StructBinder, ABC):
     cdecl = 'signal_protocol_signed_pre_key_store*'
@@ -151,6 +133,10 @@ class SignedPreKeyStore(StructBinder, ABC):
 
     @abstractmethod
     def remove_signed_pre_key(self, signed_pre_key_id):
+        pass
+
+    @abstractmethod
+    def get_all_signed_pre_key_ids(self):
         pass
 
 

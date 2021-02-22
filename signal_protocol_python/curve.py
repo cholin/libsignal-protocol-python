@@ -1,5 +1,5 @@
-from cffi import RefCountedPointer, invoke
-from buffer import Buffer
+from .cffi import RefCountedPointer, invoke
+from .buffer import Buffer
 
 
 class EcPublicKey(RefCountedPointer):

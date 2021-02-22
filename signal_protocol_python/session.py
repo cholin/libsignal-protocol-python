@@ -1,9 +1,9 @@
-from cffi import ffi, lib, invoke, Pointer
-from buffer import Buffer
-from messages import CiphertextMsg
-from keys import SessionPreKeyBundle
-from messages import PreKeySignalMsg, SignalMsg
-from errors import raise_on_error
+from .cffi import ffi, lib, invoke, Pointer
+from .buffer import Buffer
+from .messages import CiphertextMsg
+from .keys import SessionPreKeyBundle
+from .messages import PreKeySignalMsg, SignalMsg
+from .errors import raise_on_error
 
 
 class SessionBuilder(Pointer):

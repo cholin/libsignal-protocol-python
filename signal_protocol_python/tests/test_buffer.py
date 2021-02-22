@@ -1,6 +1,6 @@
 import gc
 from copy import copy
-from buffer import Buffer
+from ..buffer import Buffer
 
 
 def teardown_method(self, method):
